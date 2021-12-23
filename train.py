@@ -55,7 +55,8 @@ def train_model(model_type):
         model.compile( optimizer=keras.optimizers.Adam(1e-4),
                     loss="binary_crossentropy",
                     metrics=[tfa.metrics.F1Score(num_classes=2)])
-
+        X_train_,y_train_ = extract_data_pathches(X_train,y_train)
+        X_val_,y_val_ = extract_data_pathches(X_val,y_val)
         history = model.fit(X_train_, y_train_, epochs=NUM_EPOCHS, validation_data= (X_val_, y_val_))
         return model
     
@@ -63,27 +64,10 @@ def train_model(model_type):
     if (model_type=='Unet'):
         model = Unet_model.unet()
         # Callback to save model weights
-        
-        model_checkpoint = ModelCheckpoint(model_path,
-                                  monitor = 'loss',
-                                  save_best_ony = True,
-                                  verbose = 1)
-
-        model_earlystopper = EarlyStopping(monitor = f1_func,
-                                   mode = 'max',
-                                   patience = 9,
-                                   verbose = 1,
-                                   min_delta = 1e-4,
-                                   restore_best_weights = True)
-
-        model_reduce_lr = ReduceLROnPlateau(monitor = 'loss',
-                                    factor = 0.1,
-                                    patience = 3,
-                                    min_delta = 1e-4,
-                                    verbose = 1)
-
-        model_callbacks = [model_checkpoint, model_earlystopper, model_reduce_lr]
-        
+        model.compile( optimizer=keras.optimizers.Adam(1e-4),
+                loss="binary_crossentropy",
+                metrics=[tfa.metrics.F1Score(num_classes=2)])
+    
         train_path = '/content/drive/MyDrive/ML_Road_Segmentation/training'        
         history = model.fit(X_train,y_train,epochs=NUM_EPOCHS,validation_data=(X_val,y_val),callbacks=model_callbacks)
         
