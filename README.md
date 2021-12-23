@@ -15,3 +15,9 @@ These files can be found in the submission folder.
 The CNN model's architecture can be found in CNN_model.py
 ### 2) U-Net
 The U-Net model's architecture can be found in Unet_model.py
+
+## Training
+We have two models: a CNN and the U-Net. The training of both models can be found in train.py.
+
+### Run
+We run the model when running run.py, which trains the Unet (since it's our best model) and saves the model. 
